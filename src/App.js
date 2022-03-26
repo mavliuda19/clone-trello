@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense } from 'react'
+import {Routes, Route, Navigate}from 'react-router-dom'
+import LoadingSpinner from './components/Ui/LoadingSpinner'
+import LoginPage from './pages/Loginpage'
+import NotFound from './pages/NotFound'
 
-function App() {
+const RegisterPage = React.lazy(()=> import('./pages/RegisterPage'))
+const HomePage = React.lazy(()=>import('./pages/HomePage'))
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <>
+    <Suspense fallback={<LoadingSpinner/>}>
+        <Routes>
+      <Route exact path='/' element={<Navigate replace to='/login'/>}/>
+      <Route exact path='/home' element={<HomePage/>}/>
+      <Route exact path='/login' element={<LoginPage/>}/>
+      <Route exact path='/register' element={<RegisterPage/>}/>
+      <Route exact path='*' element={<NotFound/>}/>
+    </Routes>
+    </Suspense>
+    </>
+    
+  )
 }
 
-export default App;
+export default App
